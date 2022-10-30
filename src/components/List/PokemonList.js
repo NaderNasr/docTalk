@@ -1,14 +1,15 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
 
-const PokemonList = ({ poke }) => {
+const PokemonList = ({ poke, isLocal, savePoke }) => {
 
   const uppercaseWords = str => str.replace(/^(.)|\s+(.)/g, firstLetter => firstLetter.toUpperCase());
+
+  const id = poke?.name
   return (
     <div className="app-contaner">
       <table>
         <tbody>
-          <tr key={poke.name}>
+          <tr key={id}>
             <td><img className='detail-image' src={poke?.img} alt='pokemon' /></td>
             <td>{uppercaseWords(poke?.name)}</td>
             <td>
@@ -21,7 +22,13 @@ const PokemonList = ({ poke }) => {
           </tr>
         </tbody>
       </table>
-
+      {isLocal &&
+        <button
+          onClick={() => savePoke(poke?.name, poke?.img, poke?.types)}
+          className='button save'
+        >
+          Save
+        </button>}
     </div>
   )
 }

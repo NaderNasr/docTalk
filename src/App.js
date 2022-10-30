@@ -1,12 +1,15 @@
-import './App.css';
-import axios from 'axios'
 import { useEffect, useState } from 'react';
-import PokemonList from './components/PokemonList';
+import axios from 'axios'
+import PokemonList from './components/List/PokemonList';
+import Nav from './components/NavBar/Nav';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   const [pokeDetails, setPokeDetails] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isLocal, setIsLocal] = useState(true)
+
 
   const url = `https://pokeapi.co/api/v2/pokemon`
   const localUrl = `http://localhost:4000/api`
@@ -32,45 +35,71 @@ const App = () => {
       .then(res => pokeResult(res.data.results))
   }
 
+  const savePoke = async (id, image, types) => {
+
+    const savedPoke = {
+      name: id,
+      img: image,
+      types: types.map((type) => type)
+    }
+
+    const result = await fetch(`${localUrl}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(savedPoke)
+    })
+    const resultInJson = await result.json()
+    setPokeDetails(prev => [resultInJson,...prev])
+  };
+
   useEffect(() => {
     if (!isLocal) {
       setPokeDetails([])
       getUrl(url)
-      console.clear()
-      console.log('PokeAPI', pokeDetails)
       setIsLoading(false)
     } else {
       setPokeDetails([])
       getUrl(localUrl)
-      console.clear()
-      console.log('Express DB', pokeDetails)
       setIsLoading(false)
     }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLocal]);
 
-  // console.log(isLocal)
-  return (
 
+
+  return (
     <div>
-      <h1>PokeDex</h1>
-      <h3>Rendering: {isLocal ? 'Express DB' : 'Poke API'}</h3>
-      <button onClick={() => setIsLocal(!isLocal)} style={{ marginBottom: '20px' }}>
-        Get {!isLocal ? 'Express DB' : 'Poke API'}
-      </button>
-      <p>{`Number of Pokemon cards from ${!isLocal ? 'Express DB' : 'Poke API'}: ${pokeDetails.length} `}</p>
-      <div className='all-container'>
+      <div className='nav'>
+        <Nav isLocal={isLocal} pokeDetails={pokeDetails} setIsLocal={setIsLocal} />
+      </div>
+      <div className='all-container header'>
         {(isLoading || pokeDetails.length <= 0) ?
-          <p>Loading...</p>
+          <h3 className='loading'>Loading...</h3>
           :
-          <span>{pokeDetails?.map((poke, id) =>
-            <>
+          <div className='app'>
+            <table className='table-header'>
+              <tbody>
+                <tr className='row-header'>
+                  <td>Image</td>
+                  <td>Name</td>
+                  <td>Types</td>
+                </tr>
+              </tbody>
+            </table>
+            <span>{pokeDetails?.map((poke, id) =>
               <PokemonList
                 key={id}
+                index={id}
                 poke={poke}
+                isLocal={isLocal}
+                savePoke={savePoke}
               />
-            </>
-          )}
-          </span>
+            )}
+            </span>
+          </div>
         }
       </div>
     </div>
