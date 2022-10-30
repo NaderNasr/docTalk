@@ -1,6 +1,6 @@
 # Getting Started with PokeDex
 
-- Git clone the repo.
+- Git clone the repo. `git clone https://github.com/NaderNasr/docTalk.git`
 - Once Cloned access the root folder `doctalk` and run `npm install`.
 - Access `./server` and run `npm install`.
 - Make sure `node_modules` files are available for both the root folder (client) and the server folder.
