@@ -1,5 +1,7 @@
 # Getting Started with PokeDex
 
+Stack: React JS, Axios, Express
+
 - Git clone the repo. `git clone https://github.com/NaderNasr/docTalk.git`
 - Once Cloned access the root folder `doctalk` and run `npm install`.
 - Access `./server` and run `npm install`.
