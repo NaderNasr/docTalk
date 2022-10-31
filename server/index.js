@@ -32,10 +32,11 @@ app.get("/api/:id", (req, res) => {
     .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
     .then(axios => {
       return res.send({
-        name: axios?.data.name,
-        img: axios.data.sprites.front_default,
+        name: axios?.data?.name,
+        img: axios?.data?.sprites?.front_default,
         types: axios?.data?.types?.map(t => t.type.name)
       })
+      .catch( err => console.log(err))
     })
 })
 
@@ -57,7 +58,6 @@ app.get("/api", (req, res) => {
   app.post('/api', (req, res) => {
     const post = req.body;
     res.send(post);
-    // console.log(post);
   });
 
 
