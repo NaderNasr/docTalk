@@ -35,6 +35,26 @@ const App = () => {
       .then(res => pokeResult(res.data.results))
   }
 
+  // const savePoke = async (id, image, types) => {
+
+  //   const savedPoke = {
+  //     name: id,
+  //     img: image,
+  //     types: types.map((type) => type)
+  //   }
+
+  //   const result = await fetch(`${localUrl}`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(savedPoke)
+  //   })
+  //   const resultInJson = await result.json()
+  //   setPokeDetails(prev => [resultInJson,...prev])
+  // };
+
+
   const savePoke = async (id, image, types) => {
 
     const savedPoke = {
@@ -43,15 +63,10 @@ const App = () => {
       types: types.map((type) => type)
     }
 
-    const result = await fetch(`${localUrl}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(savedPoke)
-    })
-    const resultInJson = await result.json()
-    setPokeDetails(prev => [resultInJson,...prev])
+    await axios.post(`${localUrl}`, savedPoke)
+      .then(res => {
+        setPokeDetails(prev => [res.data, ...prev])
+      })
   };
 
   useEffect(() => {
@@ -65,7 +80,7 @@ const App = () => {
       setIsLoading(false)
     }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLocal]);
 
 
