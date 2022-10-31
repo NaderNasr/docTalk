@@ -35,25 +35,6 @@ const App = () => {
       .then(res => pokeResult(res.data.results))
   }
 
-  // const savePoke = async (id, image, types) => {
-
-  //   const savedPoke = {
-  //     name: id,
-  //     img: image,
-  //     types: types.map((type) => type)
-  //   }
-
-  //   const result = await fetch(`${localUrl}`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(savedPoke)
-  //   })
-  //   const resultInJson = await result.json()
-  //   setPokeDetails(prev => [resultInJson,...prev])
-  // };
-
 
   const savePoke = async (id, image, types) => {
 
@@ -86,7 +67,7 @@ const App = () => {
 
 
   return (
-    <div>
+    <>
       <div className='nav'>
         <Nav isLocal={isLocal} pokeDetails={pokeDetails} setIsLocal={setIsLocal} />
       </div>
@@ -104,20 +85,21 @@ const App = () => {
                 </tr>
               </tbody>
             </table>
-            <span>{pokeDetails?.map((poke, id) =>
-              <PokemonList
-                key={id}
-                index={id}
-                poke={poke}
-                isLocal={isLocal}
-                savePoke={savePoke}
-              />
-            )}
-            </span>
+            <>
+              {pokeDetails?.map((poke, id) =>
+                <PokemonList
+                  key={id}
+                  index={id}
+                  poke={poke}
+                  isLocal={isLocal}
+                  savePoke={savePoke}
+                />
+              )}
+            </>
           </div>
         }
       </div>
-    </div>
+    </>
   );
 }
 
